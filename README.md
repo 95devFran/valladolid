@@ -2,7 +2,7 @@
 
 Este proyecto es un visor web interactivo que muestra diferentes puntos turísticos de la ciudad de **Valladolid (España)**. El objetivo es ofrecer una experiencia visual sencilla y accesible para recorrer virtualmente lugares emblemáticos como plazas, monumentos, edificios históricos y más.
 
-## 🔍 Funcionalidades
+## 💻 Funcionalidades
 
 - **Mapa interactivo** de Valladolid (basado en Leaflet).
 - **Marcadores de puntos turísticos** como la Catedral, el Ayuntamiento, plazas, etc.
@@ -12,9 +12,10 @@ Este proyecto es un visor web interactivo que muestra diferentes puntos turísti
   - Un enlace a la **fuente original** con más información (Wikipedia u otras).
 - **Barra de búsqueda** para localizar rápidamente cualquier punto del mapa.
 
-## 💻 Tecnologías utilizadas
+## 🧰 Tecnologías utilizadas
 
-- HTML / CSS / JavaScript
-- [Leaflet](https://leafletjs.com/) para la visualización del mapa
-- Datos geoespaciales en formato JS
+- **Leaflet.js** – Librería principal para mapas interactivos.
+- **Leaflet.Control.Search** – Plugin para añadir una barra de búsqueda sobre el mapa.
+- **Leaflet.Measure** – Plugin para medir distancias y áreas directamente en el mapa.
+- **HTML5**, **CSS3**, **JavaScript ES6**
 
