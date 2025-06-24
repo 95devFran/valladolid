@@ -12,7 +12,7 @@ Este proyecto es un visor web interactivo que muestra diferentes puntos turísti
   - Un enlace a la **fuente original** con más información (Wikipedia u otras).
 - **Barra de búsqueda** para localizar rápidamente cualquier punto del mapa.
 
-## 🧱 Tecnologías utilizadas
+## 💻 Tecnologías utilizadas
 
 - HTML / CSS / JavaScript
 - [Leaflet](https://leafletjs.com/) para la visualización del mapa
