@@ -1,4 +1,26 @@
 /* Estilo general */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#map {
+  flex: 1;
+}
+
+.footer {
+  background-color: #fef9f4;
+  color: #666;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  border-top: 1px solid #ddd;
+}
+
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
