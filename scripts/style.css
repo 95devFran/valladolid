@@ -1,0 +1,161 @@
+/* Estilo general */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fef9f4; /* color crema suave */
+    color: #333;
+  }
+  
+  /* Título */
+  .titulo {
+    background-color: #d4a373; /* color arena/tierra cálido */
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .titulo h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  /* Contenedor del mapa */
+  #map {
+    height: calc(100vh - 80px); /* ocupa el alto restante del body menos el header */
+    width: 100%;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    border-top: 2px solid #eee;
+  }
+  
+  /* Popup Leaflet personalizado */
+  .leaflet-popup-content-wrapper {
+    background: #fff8ee;
+    border-left: 4px solid #d4a373;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 6px;
+  }
+  
+  .leaflet-popup-content a {
+    color: #b85c38;
+    text-decoration: none;
+  }
+  
+  .leaflet-popup-content a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Imagen que aparece abajo a la derecha */
+  .imagen-popup {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    max-width: 250px;
+    max-height: 180px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  /* Popup turístico personalizado */
+.custom-popup {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #444;
+    background-color: #fffaf2;
+    padding: 8px 12px;
+    border-left: 4px solid #d4a373;
+    border-radius: 4px;
+    line-height: 1.4;
+  }
+  
+  .custom-popup p {
+    margin: 0 0 6px 0;
+  }
+  
+  .custom-popup strong {
+    color: #b85c38;
+    font-size: 1rem;
+  }
+  
+  .custom-popup a {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #b85c38;
+    text-decoration: none;
+    border-bottom: 1px dashed #b85c38;
+  }
+  
+  .custom-popup a:hover {
+    color: #8c3a25;
+    border-bottom-style: solid;
+  }
+
+  .custom-marker .marker-icon {
+    font-size: 24px;
+    color: #b85c38;
+    background: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+  }
+  .custom-marker .marker-icon:hover {
+    transform: scale(1.1);
+  }
+
+  #image-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999; /* Asegura que esté por encima del mapa */
+    background-color: white;
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  .imagen-popup {
+    max-width: 250px;
+    max-height: 180px;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+  }
+  
+  #close-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1001;
+    color: #ff0000;
+    font-weight: bold;
+    background-color: #fff;
+    padding: 2px 6px;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  #close-image:hover {
+    background-color: #f8e9d4;
+  }
+  
+  
+  /* Responsive para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .titulo h1 {
+      font-size: 1.4rem;
+    }
+    .imagen-popup {
+      max-width: 90%;
+      right: 5%;
+    }
+  }
+  

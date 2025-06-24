@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de La Rioja</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="leaflet-search-master/src/leaflet-search.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-search/dist/leaflet-search.css" />
+  <style>
+    #map { height: 800px; width: 100%; }
+    .layer-control {
+      background: yellow;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .leaflet-control-search {
+      background-color: yellow;
+      border-radius: 5px;
+      padding: 5px;
+      font-size: 10px;
+    }
+    .leaflet-control-search .search-button {
+      background-color: yellow;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .leaflet-control-search .search-button:hover {
+      background-color: orange;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Mapa de La Rioja hecho con Leaflet</h1>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="leaflet-search-master/src/leaflet-search.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<script src="https://unpkg.com/leaflet-control-search/dist/leaflet-search.js"></script>
+<script src="https://unpkg.com/leaflet-search/dist/leaflet-search.src.js"></script>
+
+<script type="text/javascript" src="limites.js"></script>
+<script type="text/javascript" src="alhama.js"></script>
+<script type="text/javascript" src="cidacos.js"></script>
+<script type="text/javascript" src="ebro_medio.js"></script>
+<script type="text/javascript" src="iregua.js"></script>
+<script type="text/javascript" src="leza.js"></script>
+<script type="text/javascript" src="tiron.js"></script>
+<script type="text/javascript" src="ccrr_rioja.js"></script>
+<script src="https://unpkg.com/shapefile@latest/dist/shapefile.js"></script>
+
+<script>
+  // Mapa centrado en La Rioja
+  var map = L.map('map').setView([42.4422, -2.4443], 9);
+
+  // Mapas base 
+  var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: '&copy; <a href="https://opentopomap.org/copyright">'
+  });
+
+  var pnoaLayer = L.tileLayer('https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg', {
+    maxZoom: 19,
+    attribution: 'CC BY 4.0 scne.es'
+  });
+
+  // Diseño de estilo para las capas
+  var estilo_1 = {
+    "color": "#feb24c",
+    "weight": 4,
+    "opacity": 0.8
+  };
+
+  var estilo_2 = {
+    "color": "#3182bd",
+    "weight": 3,
+    "opacity": 0.5
+  };
+
+  // Crear las capas sin añadirlas al mapa
+  var limitesLayer = L.geoJson(limites, {
+    onEachFeature: onEachLimites,
+    style: estilo_1,
+  });
+
+  var alhamaLayer = L.geoJson(alhama, {
+    onEachFeature: onEachFeature,
+    style: estilo_2,
+  });
+
+  var cidacosLayer = L.geoJson(cidacos, {
+    onEachFeature: onEachFeature,
+    style: estilo_2,
+  });
+
+  var ebro_medioLayer = L.geoJson(ebro_medio, {
+    onEachFeature: onEachFeature,
+    style: estilo_2,
+  });
+
+  var ireguaLayer = L.geoJson(iregua, {
+    onEachFeature: onEachFeature,
+    style: estilo_2,
+  });
+
+  var lezaLayer = L.geoJson(leza, {
+    onEachFeature: onEachFeature,
+    style: estilo_2,
+  });
+
+  var tironLayer = L.geoJson(tiron, {
+    onEachFeature: onEachFeature,
+    style: estilo_2,
+  });
+
+  var ccrrLayer = L.geoJson(ccrr_rioja, {
+    onEachFeature: onEachComunidad,
+  });
+
+  // Control de capas
+  var overlay = {
+    "Límites de La Rioja": limitesLayer,
+    "Comunidades de regantes": ccrrLayer,
+    "Alhama": alhamaLayer,
+    "Cidacos": cidacosLayer,
+    "Ebro Medio": ebro_medioLayer,
+    "Iregua": ireguaLayer,
+    "Leza": lezaLayer,
+    "Tirón": tironLayer
+  };
+
+  // Control de mapas base
+  var baseMaps = {
+    "Open Street Map": osmLayer,
+    "Topográfico": topoLayer,
+    "Imagen PNOA": pnoaLayer
+  };
+
+  // Añadir control de capas al mapa (sin ninguna seleccionada por defecto)
+  L.control.layers(baseMaps, overlay, {
+    position: 'bottomright',
+    collapsed: false
+  }).addTo(map);
+
+  // Acumulador de información
+  var accumulatedInfo = "";
+
+  // Visualizar datos al clicar
+  function onEachFeature(feature, layer) {
+    layer.on('click', function(e) {
+      accumulatedInfo += "<b>" + (feature.properties.Nom_SE || "Sin nombre") + "</b><br>";
+      layer.bindPopup(accumulatedInfo).openPopup();
+      // Al hacer clic en otro polígono, se debe abrir su información
+      map.on('click', function(e) {
+        accumulatedInfo = ""; // Resetear acumulador al hacer clic en el mapa
+      });
+    });
+
+    // Mostrar popup al pasar el ratón
+    layer.on('mouseover', function(e) {
+      this.openPopup();
+    });
+
+    // Cerrar popup al salir el ratón
+    layer.on('mouseout', function(e) {
+      this.closePopup();
+    });
+  }
+
+  // Para los límites de La Rioja
+  function onEachLimites(feature, layer) {
+    layer.bindPopup("<b>La Rioja</b>");
+
+    layer.on('mouseover', function(e) {
+      this.openPopup();
+    });
+
+    layer.on('mouseout', function(e) {
+      this.closePopup();
+    });
+  }
+
+  // Para las comunidades de regantes
+  function onEachComunidad(feature, layer) {
+    layer.on('click', function(e) {
+      accumulatedInfo += `
+        <b>${feature.properties.CR || "Sin nombre"}</b><br>
+        <strong style="color: #2c7fb8">Zona:</strong> ${feature.properties.ZONA || "No disponible"}<br>
+        <strong style="color: #2c7fb8">Densidad:</strong> ${feature.properties.DENSIDAD || "Desconocido"}<br>
+        <strong style="color: #2c7fb8">encuesta:</strong> ${feature.properties.item200 || "Desconocido"}<br>
+        <strong style="color: #2c7fb8">Superficie (ha):</strong> ${feature.properties.SUPHAS !== undefined ? feature.properties.SUPHAS.toFixed(2) : "Sin información"}<br>
+      `;
+      layer.bindPopup(accumulatedInfo).openPopup();
+      // Al hacer clic en otro polígono, se debe abrir su información
+      map.on('click', function(e) {
+        accumulatedInfo = ""; // Resetear acumulador al hacer clic en el mapa
+      });
+    });
+
+    layer.on('mouseover', function(e) {
+      this.openPopup();
+    });
+
+    layer.on('mouseout', function(e) {
+      this.closePopup();
+    });
+  }
+  
+  // Cargar el archivo CSV usando PapaParse
+  Papa.parse("encuesta.csv", {
+    download: true,
+    header: true,
+    complete: function(results) {
+      var encuestaData = results.data; // Array con los datos del CSV
+      // Crear un mapa de búsqueda rápida entre pkuid del CSV y sus datos correspondientes
+      var dataMap = {};
+      encuestaData.forEach(function(row) {
+        dataMap[row.pkuid] = row; // Vincula cada pkuid con su fila de datos
+      });
+
+      // Añadir datos del CSV a los objetos GeoJSON (ccrrLayer)
+      ccrrLayer.eachLayer(function(layer) {
+        var objectId = layer.feature.properties.ObjectID; // ObjectID del GeoJSON
+        if (dataMap[objectId]) {
+          // Si existe un match, añadimos los datos del CSV a las propiedades del GeoJSON
+          layer.feature.properties.encuestaData = dataMap[objectId];
+        }
+      });
+
+      // Ahora actualizamos el Popup para mostrar los nuevos datos añadidos
+      function onEachComunidad(feature, layer) {
+        layer.on('click', function(e) {
+          var info = `
+            <b>${feature.properties.CR || "Sin nombre"}</b><br>
+            <strong style="color: #2c7fb8">Zona:</strong> ${feature.properties.ZONA || "No disponible"}<br>
+            <strong style="color: #2c7fb8">Densidad:</strong> ${feature.properties.DENSIDAD || "Desconocido"}<br>
+            <strong style="color: #2c7fb8">Superficie (ha):</strong> ${feature.properties.SUPHAS !== undefined ? feature.properties.SUPHAS.toFixed(2) : "Sin información"}<br>
+          `;
+
+          // Si hay datos de encuesta para este polígono, los añadimos al Popup
+          if (feature.properties.encuestaData) {
+            var encuesta = feature.properties.encuestaData;
+            info += `
+              <strong style="color: #d95f02">Dato Encuesta 1:</strong> ${encuesta.dato1 || "No disponible"}<br>
+              <strong style="color: #d95f02">Dato Encuesta 2:</strong> ${encuesta.dato2 || "No disponible"}<br>
+              <strong style="color: #d95f02">Dato Encuesta 3:</strong> ${encuesta.dato3 || "No disponible"}<br>
+            `;
+          }
+
+          layer.bindPopup(info).openPopup();
+        });
+
+        layer.on('mouseover', function(e) {
+          this.openPopup();
+        });
+
+        layer.on('mouseout', function(e) {
+          this.closePopup();
+        });
+      }
+
+      // Volver a aplicar la función a ccrrLayer para que use la nueva lógica del Popup
+      ccrrLayer.eachLayer(function(layer) {
+        onEachComunidad(layer.feature, layer);
+      });
+    }
+  });
+
+
+  // Controles añadidos
+  L.control.scale({
+    position: 'bottomleft'
+  }).addTo(map);
+
+</script>
+</body>
+</html>

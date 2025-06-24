@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turismo - Valladolid</title>
+  
+  <!-- CSS: Leaflet y Plugins -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="leaflet-search-master/src/leaflet-search.css" />
+  
+  <!-- CSS de Leaflet.Measure -->
+  <link rel="stylesheet" href="Leaflet.Measure-master/src/leaflet.measure.css"/>
+
+  <!--Full Screen Mode-->
+  <link rel="stylesheet" href="./full.screen/Control.FullScreen.css"/>
+
+  <!-- CSS: Estilos personalizados -->
+  <link rel="stylesheet" href="scripts/style.css" />
+</head>
+<body>
+
+  <!-- Título del Mapa -->
+  <div class="titulo">
+    <h1>Puntos Turísticos de Valladolid</h1>
+  </div>
+
+  <!-- Contenedor del Mapa -->
+  <div id="map"></div>
+
+  <div id="image-container" style="display: none;">
+    <span id="close-image">✖</span>
+    <img id="image-display" class="imagen-popup" src="" alt="Vista del punto turístico">
+  </div>
+  
+  
+  
+  <!-- Carga de JS: Leaflet y Plugins -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!--Search Bar Control-->
+  <script src="leaflet-search-master/src/leaflet-search.js"></script>
+  <!--Full Screen Mode JS-->
+  <script src="./full.screen/Control.FullScreen.js"></script>
+      <!--Medir distancias-->
+  <script src="Leaflet.Measure-master/src/leaflet.measure.js"></script>
+
+  <!-- Carga de Datos Geográficos -->
+  <script src="capas/puntos.js"></script>
+
+  <!-- Script Principal -->
+  <script src="scripts/script.js"></script>
+  <!--<script src="scripts/buscadores.js"></script>-->
+
+</body>
+</html>

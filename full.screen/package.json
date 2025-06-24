@@ -1,0 +1,33 @@
+{
+  "name": "leaflet.fullscreen",
+  "version": "3.0.2",
+  "description": "Simple plugin for Leaflet that adds fullscreen button to your maps.",
+  "main": "Control.FullScreen.js",
+  "scripts": {
+    "lint": "eslint && stylelint **/*.css && prettier . --check",
+    "lint:fix": "eslint --fix && stylelint **/*.css --fix && prettier . --write",
+    "postversion": "git push && git push --tags && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/brunob/leaflet.fullscreen.git"
+  },
+  "keywords": [
+    "leaflet",
+    "plugins",
+    "maps",
+    "fullscreen"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@stylistic/eslint-plugin-js": "^3.0.1",
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.2",
+    "stylelint": "^16.13.0",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-prettier": "^5.0.2"
+  },
+  "author": "b_b",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
